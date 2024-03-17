@@ -18,14 +18,14 @@ app.get('/', function (req, res) {
 });
 
 
-capp.post('/upload', upload.single('file'), (req, res) => {
+capp.post('/api/fileanalyse', upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
   // Extract file information from req.file
   const { originalname, mimetype, size } = req.file;
-
+console.log(originalname, mimetype, size)
   // Send a JSON response with file information
   res.json({
     filename: originalname,
