@@ -35,7 +35,7 @@ app.post('/api/fileanalyse', upload.single('file'), (req, res) => {
   const { originalname, mimetype, size } = req.file;
 c
   // Send a JSON response with file information
-  res.json({
+  return res.json({
     filename: originalname,
     type: mimetype,
     size: size
