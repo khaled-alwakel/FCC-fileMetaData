@@ -1,26 +1,29 @@
-var express = require('express');
-var cors = require('cors');
+const  express = require('express');
+const  app = express();
+
+const  cors = require('cors');
 require('dotenv').config()
 
-var app = express();
 app.use (express.json())
+app.use(express.static('public'));
+app.use(cors());
 
 const multer = require('multer');
 
-// Set up multer storage and file filter
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    // You can implement your file type validation logic here
-    cb(null, true);
-  }
+// Define storage for uploaded files
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Destination folder for uploaded files
+  },
+  filename: (req, file, cb) => {
+    cb(null,Date.now() + '-' + file.originalname); // Rename the file to include the timestamp
+  },
 });
 
-app.use(express.static('public'));
-app.use(cors());
-app.use('/public', express.static(process.cwd() + '/public'));
+// Initialize Multer with the storage configuration
+const upload = multer({ storage: storage });
 
+app.use('/public', express.static(process.cwd() + '/public'));
 app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
