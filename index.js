@@ -9,20 +9,17 @@ app.use(express.static('public'));
 app.use(cors());
 
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer();
 
 app.use('/public', express.static(process.cwd() + '/public'));
+
 app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-
 app.post("/api/fileanalyse", upload.single('upfile'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-
-
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  
   return res.status(200).json({
     name: req.file.originalname,
     type: req.file.mimetype,
