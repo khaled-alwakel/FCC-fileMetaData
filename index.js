@@ -9,19 +9,7 @@ app.use(express.static('public'));
 app.use(cors());
 
 const multer = require('multer');
-
-// Define storage for uploaded files
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Destination folder for uploaded files
-  },
-  filename: (req, file, cb) => {
-    cb(null,Date.now() + '-' + file.originalname); // Rename the file to include the timestamp
-  },
-});
-
-// Initialize Multer with the storage configuration
-const upload = multer({ storage: storage });
+const upload = multer();
 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.get('/', function (req, res) {
@@ -29,7 +17,7 @@ app.get('/', function (req, res) {
 });
 
 
-app.post('/api/fileanalyse', upload.single('file'), (req, res) => {
+app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
