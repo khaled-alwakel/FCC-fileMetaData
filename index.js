@@ -36,7 +36,7 @@ app.post('/api/fileanalyse', upload.single('file'), (req, res) => {
 
   // Extract file information from req.file
   const { originalname, mimetype, size } = req.file;
-c
+
   // Send a JSON response with file information
   return res.json({
     filename: originalname,
