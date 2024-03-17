@@ -9,7 +9,7 @@ app.use(express.static('public'));
 app.use(cors());
 
 const multer = require('multer');
-const upload = multer();
+const upload = multer({ dest: 'uploads/' });
 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.get('/', function (req, res) {
@@ -22,14 +22,10 @@ app.post("/api/fileanalyse", upload.single('upfile'), (req, res) => {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
-  // Extract file information from req.file
-  const { originalname, mimetype, size } = req.file;
-
-  // Send a JSON response with file information
   return res.json({
-    filename: originalname,
-    type: mimetype,
-    size: size
+    filename: req.file.originalname,
+    type: req.file.mimetype,
+    size: req.file.size
   });
 });
 
