@@ -6,8 +6,16 @@ var app = express();
 app.use (express.json())
 
 const multer = require('multer');
+
+// Set up multer storage and file filter
 const storage = multer.memoryStorage();
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    // You can implement your file type validation logic here
+    cb(null, true);
+  }
+});
 
 app.use(express.static('public'));
 app.use(cors());
@@ -25,7 +33,7 @@ app.post('/api/fileanalyse', upload.single('file'), (req, res) => {
 
   // Extract file information from req.file
   const { originalname, mimetype, size } = req.file;
-console.log(originalname, mimetype, size)
+c
   // Send a JSON response with file information
   res.json({
     filename: originalname,
@@ -34,7 +42,7 @@ console.log(originalname, mimetype, size)
   });
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 app.listen(port, function () {
   console.log('Your app is listening on port ' + port)
 });
