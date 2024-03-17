@@ -9,7 +9,7 @@ app.use(express.static('public'));
 app.use(cors());
 
 const multer = require('multer');
-const upload = multer();
+const upload = multer(;
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
