@@ -7,7 +7,7 @@ app.use (express.json())
 
 const multer = require('multer');
 const storage = multer.memoryStorage();
-
+const upload = multer({ dest: 'uploads/' })
 
 app.use(express.static('public'));
 app.use(cors());
@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
 });
 
 
-capp.post('/api/fileanalyse', upload.single('file'), (req, res) => {
+app.post('/api/fileanalyse', upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
